@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Brian&#x27;s Logbook - Blog</title>
+      <link>https://blog.brianc.me</link>
+      <description>Notes, thoughts and projects by Brian Chen in Brian Chen&#x27;s blog</description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://blog.brianc.me/categories/blog/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Hello, world!</title>
+          <pubDate>Thu, 01 Jan 1970 00:00:00 +0000</pubDate>
+          <author>Brian Chen</author>
+          <link>https://blog.brianc.me/posts/hello/</link>
+          <guid>https://blog.brianc.me/posts/hello/</guid>
+          <description xml:base="https://blog.brianc.me/posts/hello/">&lt;p&gt;Summary&amp;hellip;
+&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>
