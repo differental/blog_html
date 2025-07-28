@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+  <loc>https://blog.brianc.me/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/about/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/categories/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/categories/notes/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/categories/notes/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/categories/writeup/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/categories/writeup/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/copyright/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/disclaimer/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/posts/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/posts/variables-and-constants/</loc>
+  <lastmod>2025-05-09</lastmod>
+</url>
+<url>
+  <loc>https://blog.brianc.me/projects/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/projects/enviame/</loc>
+  <lastmod>2025-04-19</lastmod>
+</url>
+<url>
+  <loc>https://blog.brianc.me/projects/idp/</loc>
+  <lastmod>2025-03-19</lastmod>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/backend/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/backend/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/cpp/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/cpp/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/microcontroller/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/microcontroller/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/postgres/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/postgres/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/python/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/python/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/raspberry-pi/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/raspberry-pi/page/1/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/rust/</loc>
+</url>
+<url>
+  <loc>https://blog.brianc.me/tags/rust/page/1/</loc>
+</url>
+</urlset>
