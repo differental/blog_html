@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Brian&#x27;s Logbook - backend</title>
+      <link>https://blog.brianc.me</link>
+      <description>Notes, thoughts, projects and blog posts by Brian Chen</description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://blog.brianc.me/tags/backend/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Sat, 19 Apr 2025 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Enviame - Interim Writeup</title>
+          <pubDate>Wed, 16 Apr 2025 00:00:00 +0000</pubDate>
+          <author>Brian Chen</author>
+          <link>https://blog.brianc.me/projects/enviame/</link>
+          <guid>https://blog.brianc.me/projects/enviame/</guid>
+          <description xml:base="https://blog.brianc.me/projects/enviame/">
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(0, 191, 165, 0.1);&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;tip.svg);&quot;
+    &gt;
+      tip
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;Copyright Notice&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;This post is licensed under &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-nc-nd&#x2F;4.0&#x2F;&quot;&gt;CC BY-NC-ND 4.0&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(0, 176, 255, 0.1);&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;abstract.svg);&quot;
+    &gt;
+      abstract
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;TL;DR&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;br&#x2F;&gt;
+&lt;details&gt;
+&lt;summary&gt;Expand&lt;&#x2F;summary&gt;
+&lt;p&gt;&lt;strong&gt;What&lt;&#x2F;strong&gt;: A full-stack app with a Rust backend to prioritise message delivery with configurable urgency, SSR frontend, and email + calendar integration.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Why&lt;&#x2F;strong&gt;: To solve a personal problem around message prioritisation and experiment with Rust backend architecture.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Stack&lt;&#x2F;strong&gt;: Rust (axum, tokio, sqlx, askama), PostgreSQL, Vanilla JS + Bootstrap.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Philosophy&lt;&#x2F;strong&gt;: Overengineered on purpose to gain experience in industry-standard solutions.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Status&lt;&#x2F;strong&gt;: MVP built and deployed in under a day, followed by QoL and scalability improvements. v1.0.9 feature-complete.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Future&lt;&#x2F;strong&gt;: React&#x2F;Svelte SPA, OAuth2, more testing&#x2F;logging.&lt;&#x2F;p&gt;
+&lt;&#x2F;details&gt;
+&lt;br&#x2F;&gt;&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;This is an interim writeup for &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;differental&#x2F;enviame&quot;&gt;Enviame&lt;&#x2F;a&gt;, drafted after &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;differental&#x2F;enviame&#x2F;releases&#x2F;tag&#x2F;v1.0.9&quot;&gt;v1.0.9&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Enviame is a simple project designed to solve my real-life problem of &lt;a href=&quot;https:&#x2F;&#x2F;blog.brianc.me&#x2F;projects&#x2F;enviame&#x2F;#motivation&quot;&gt;message prioritisation&lt;&#x2F;a&gt;, while also serving as an opportunity to build a full backend in Rust from scratch (with the help of various runtimes and libraries).&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;motivation&quot;&gt;Motivation&lt;&#x2F;h3&gt;
+&lt;p&gt;At the core of all productivity techniques is a simple principle: minimise distractions to maintain focus. That’s why phones have Do Not Disturb modes and silence buttons.&lt;&#x2F;p&gt;
+&lt;p&gt;The problem is, these tools often create an all-or-nothing scenario - either everything gets through, or nothing does. While some platforms offer limited solutions - like Apple’s iMessage showing when someone has silenced notifications and letting you bypass it if needed - most of us still rely on inconsistent systems like &quot;call if it’s urgent&quot;, which is often unreliable. For example, you would be fine with a friend calling about his lost ID during a focus study session, but not during an online interview or a sports race. After all, some fires burn hotter than others.&lt;&#x2F;p&gt;
+&lt;p&gt;Enviame is designed to introduce more nuanced control, enabling different levels of message priority to ensure only the right messages get through at the right time.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;development-journey&quot;&gt;Development Journey&lt;&#x2F;h3&gt;
+&lt;p&gt;All core features, with the exception of sending notification emails, were completed within the first 3 hours of development. The email features were then implemented within around 3 hours, making a working MVP within a day. Multiple hours were then spent setting up deployment pipelines (as this was new to me) and debugging the email features (which turns out was just &lt;a href=&quot;https:&#x2F;&#x2F;blog.brianc.me&#x2F;projects&#x2F;enviame&#x2F;#smtp-email-delivery&quot;&gt;inconsistent&lt;&#x2F;a&gt;), but by &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;differental&#x2F;enviame&#x2F;releases&#x2F;tag&#x2F;v1.0.3&quot;&gt;v1.0.3&lt;&#x2F;a&gt; the project was already quite complete.&lt;&#x2F;p&gt;
+&lt;p&gt;Most of the time afterwards was spent on QoL improvements, for example improving the frontend, minimising dependency usage, &lt;em&gt;etc.&lt;&#x2F;em&gt; The two largest features between v1.0.3 and v1.0.9 were the message delivery status display and the calendar status display, which were certainly not the largest features.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;design-philosophy&quot;&gt;Design Philosophy&lt;&#x2F;h3&gt;
+&lt;p&gt;You may notice that the project is heavily overengineered, for example using &lt;code&gt;askama&lt;&#x2F;code&gt; for templating, using HTML minifiers, using cryptographically secure hashing for message queries, and having email and calendar worker threads, when obviously I won&#x27;t have 1000 friends sending me messages at once and obviously they aren&#x27;t malicious hackers trying to know whether someone else&#x27;s message got delivered. All of these were very much intentional.&lt;&#x2F;p&gt;
+&lt;p&gt;The goal here is to gain experience in industry-standard solutions to these types of problems, instead of landing with &lt;em&gt;ad hoc&lt;&#x2F;em&gt; strategies that would only work for a few dozen users.&lt;&#x2F;p&gt;
+&lt;p&gt;Making the deployment process smoother was also one of the goals that became increasingly important after an accident wiped the entire production server (oops). After v1.0.8, the building process was moved to the CI&#x2F;CD workflow so there is minimal setup and configuration required on the server side.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;technical-overview&quot;&gt;Technical Overview&lt;&#x2F;h2&gt;
+&lt;p&gt;Enviame is a Server Side Rendered (SSR) Multi-Page Application (MPA) with AJAX.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;main-features&quot;&gt;Main Features&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;User Authentication&lt;&#x2F;strong&gt;: Easy login and registration, secure and persistent storage with PostgreSQL&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Email Delivery&lt;&#x2F;strong&gt;: Immediate notification delivery with SMTP, with multiple priority options&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Calendar Status&lt;&#x2F;strong&gt;: Integration with the &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;icalendar.org&#x2F;&quot;&gt;iCalendar&lt;&#x2F;a&gt; protocol, displays current status and expected contact hours&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;tech-stack&quot;&gt;Tech Stack&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Backend&lt;&#x2F;strong&gt;: Rust
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;axum&lt;&#x2F;code&gt;: Web Framework&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;tokio&lt;&#x2F;code&gt;: Asynchronous Runtime&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;lettre&lt;&#x2F;code&gt;: SMTP Email Delivery&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;sqlx&lt;&#x2F;code&gt;: Database Interaction&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;askama&lt;&#x2F;code&gt;: Static HTML Templating&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Database&lt;&#x2F;strong&gt;: PostgreSQL&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Frontend&lt;&#x2F;strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;Static HTML&lt;&#x2F;li&gt;
+&lt;li&gt;Vanilla JS&lt;&#x2F;li&gt;
+&lt;li&gt;Bootstrap UI&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;design-decisions&quot;&gt;Design Decisions&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;1-using-rust-as-backend&quot;&gt;1. Using Rust as Backend&lt;&#x2F;h3&gt;
+&lt;p&gt;Rust has some obvious advantages over the more popular backend options such as Node.js or Python. It is a static, compiled language with complete type safety, the ownership model is great at preventing data races in a multi-thread context, and the Cargo ecosystem is rich enough for tasks like sending emails or converting datetimes to feel like a cakewalk. Not only is runtime significantly faster but the developer is also significantly less likely to make mistakes.&lt;&#x2F;p&gt;
+&lt;p&gt;The project was intended for me to gauge the difficulty of writing an actual multi-threaded server in Rust. So far, I am delighted by what Rust has to offer.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;2-using-ssr-instead-of-an-spa-as-frontend&quot;&gt;2. Using SSR instead of an SPA as Frontend&lt;&#x2F;h3&gt;
+&lt;p&gt;This was a debatable decision. A simple excuse would be that the app only has a few pages and building an entire separate frontend would be unnecessarily complex, but that would contradict the &lt;a href=&quot;https:&#x2F;&#x2F;blog.brianc.me&#x2F;projects&#x2F;enviame&#x2F;#design-philosophy&quot;&gt;design philosophy&lt;&#x2F;a&gt; of using the &quot;industry standard solution&quot;, SPAs are, at least as of right now, definitely the &lt;em&gt;de facto&lt;&#x2F;em&gt; standard for a frontend.&lt;&#x2F;p&gt;
+&lt;p&gt;To put brutally, I am a systems&#x2F;backend developer, and the initial motivation for the project was to experiment with a Rust backend. I did not plan to nor have the time to spend on the frontend, while also adding complexity to the backend structure since I now have &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Cross-origin_resource_sharing&quot;&gt;CORS&lt;&#x2F;a&gt; to worry about.&lt;&#x2F;p&gt;
+&lt;p&gt;AJAX was indeed slightly less enjoyable and perhaps more verbose than using Svelte or React, but for a &quot;two-form&quot; app like this, it was definitely a good trade-off. I would say, if some day I start to make an application with more than a dozen pages, or if those pages are more complex than one or two forms and half a dozen buttons, then an SPA would probably be the way to go.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-choosing-postgresql-as-the-database-solution&quot;&gt;3. Choosing PostgreSQL as the Database Solution&lt;&#x2F;h3&gt;
+&lt;p&gt;Honestly, not a lot of thought went into this decision. PostgreSQL is pretty much also the &lt;em&gt;de facto&lt;&#x2F;em&gt; database for modern large-scale applications. Given the design philosophy of scalability, this was a no-brainer.&lt;&#x2F;p&gt;
+&lt;p&gt;Given that the project did not use any of PostgreSQL&#x27;s advanced features, an alternative would be SQLite, which is more portable and likely faster and easier to set up.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;4-using-in-memory-scheduling-for-email-and-calendar-workers-instead-of-cron-jobs&quot;&gt;4. Using In-Memory Scheduling for Email and Calendar Workers instead of Cron Jobs&lt;&#x2F;h3&gt;
+&lt;p&gt;Cron jobs will be more lightweight, have less CPU usage and is generally a more popular option for production systems. I opted for in-memory scheduling since I don&#x27;t think the difference in the context of this project is significant enough to justify the more complex setup (&lt;em&gt;e.g.,&lt;&#x2F;em&gt; including an entire API endpoint so that the cron job can update the calendar status).&lt;&#x2F;p&gt;
+&lt;p&gt;The disadvantage is, if the app panics and aborts, the remaining emails won&#x27;t get sent and the calendar won&#x27;t be updated. However, given the decision to use SSR, the app wouldn&#x27;t even display a home page if the process is not running.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;5-using-sqlx-for-database-integration&quot;&gt;5. Using &lt;code&gt;sqlx&lt;&#x2F;code&gt; for Database Integration&lt;&#x2F;h3&gt;
+&lt;p&gt;This was a simple decision. Even though &lt;code&gt;sqlx&lt;&#x2F;code&gt; pulls in more dependencies than something like &lt;code&gt;postgres&lt;&#x2F;code&gt;, the static typechecking for the database along with the support for timestamptz (timestamp with timezones) makes the development experience a lot easier and a lot more enjoyable.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;6-using-askama-as-the-templating-engine&quot;&gt;6. Using &lt;code&gt;askama&lt;&#x2F;code&gt; as the Templating Engine&lt;&#x2F;h3&gt;
+&lt;p&gt;Also a simple decision. &lt;code&gt;askama&lt;&#x2F;code&gt; performs template syntax checks during compile time (as opposed to runtime for &lt;code&gt;tera&lt;&#x2F;code&gt;), meaning the app is both safer and faster at runtime.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;askama&lt;&#x2F;code&gt; also has simple and straightforward syntax (which, surprisingly, &lt;code&gt;html-minifier&lt;&#x2F;code&gt; also had no issues handling), along with strong typing.&lt;&#x2F;p&gt;
+&lt;p&gt;Comparing &lt;code&gt;askama&lt;&#x2F;code&gt; and &lt;code&gt;maud&lt;&#x2F;code&gt;, in retrospect the latter might be a better option for performance, but porting from multiple HTML files (with duplicate sections) was likely easier for &lt;code&gt;askama&lt;&#x2F;code&gt; - I cannot tell for sure.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;7-other-deployment-decisions&quot;&gt;7. Other Deployment Decisions&lt;&#x2F;h3&gt;
+&lt;p&gt;Since a lot of decisions were made during the deployment process, here&#x27;s a summary with justification:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Self-hosting Database&lt;&#x2F;strong&gt; instead of Supabase or Firebase: Easier to debug, cleaner structure&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Custom Build Configuration&lt;&#x2F;strong&gt;: Prioritise runtime speed over compile speed&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Minimal Dependencies&lt;&#x2F;strong&gt;: Still optimise for compile speed and binary size&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;challenges-and-solutions&quot;&gt;Challenges and Solutions&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;smtp-email-delivery&quot;&gt;SMTP Email Delivery&lt;&#x2F;h3&gt;
+&lt;p&gt;After experimenting with SendGrid, I decided that it was way too unreliable, almost always going to spam, which defeats the purpose of notification emails or message receipts.&lt;&#x2F;p&gt;
+&lt;p&gt;Since I am managing my domain emails via iCloud, I decided to experiment with iCloud&#x27;s SMTP. It rarely went to spam and testing succeeded so I kept it as my option.&lt;&#x2F;p&gt;
+&lt;p&gt;In the following days, there are multiple occurrences of emails being delivered on the next morning or straight up not being delivered at all, without any error logs on the server. When manually inspected, it seems that iCloud would also return a &lt;code&gt;202 Accepted&lt;&#x2F;code&gt; for these emails but for some reason they are either rejected or queued for unreasonably long hours.&lt;&#x2F;p&gt;
+&lt;p&gt;After some painful debugging, I found out that these &quot;delayed&quot; emails have a iCloud spam header set to true. It turns out, as my email template was a few lines of plain text and my test messages were often random letters, iCloud would mark some of them, especially repeated attempts of the exact same message, as spam. Presumably these then went through human review, hence some messages went through hours later while others got rejected.&lt;&#x2F;p&gt;
+&lt;p&gt;This was fixed very easily by using a proper HTML template for my email, and setting the content to HTML instead of plain text.&lt;&#x2F;p&gt;
+&lt;p&gt;It was somewhat irritating to debug this. Since the delivery behaviour was inconsistent (and not 100% failure), there were multiple times where I wrongly deduced the cause of the bug due to two attempts one succeeding and one failing - when in reality it&#x27;s just because iCloud decided to mark the latter as spam.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;sqlx-and-ci-cd&quot;&gt;&lt;code&gt;sqlx&lt;&#x2F;code&gt; and CI&#x2F;CD&lt;&#x2F;h3&gt;
+&lt;p&gt;This is what happens when you ask ChatGPT to generate the code for you instead of reading the docs. I asked ChatGPT for the standard template to connect to and send queries to a PostgreSQL database, it told me I could use the &lt;code&gt;sqlx::query!&lt;&#x2F;code&gt; macro, I tested it out and realised it supported compile-time type-checking, then I just left it in the code.&lt;&#x2F;p&gt;
+&lt;p&gt;When the time to deploy comes, I decided that a standard build and deploy CI&#x2F;CD pipeline wouldn&#x27;t work, since the GitHub Actions runner doesn&#x27;t have a postgres database with the proper schema. Therefore, I opted for the more complicated solution, which is to write an &lt;em&gt;ad hoc&lt;&#x2F;em&gt; bash script on the server to handle updates.&lt;&#x2F;p&gt;
+&lt;p&gt;After deciding in v1.0.8 to make the deployment process smoother, I wrote a ridiculous workflow that created a postgres database, applied the schema, then used that to compile the binary. I again asked ChatGPT to generate the workflow for me, and luckily, this time it decided to give me &lt;code&gt;sqlx prepare&lt;&#x2F;code&gt; for some unknown reason (it&#x27;s incorrect syntax-wise, and it&#x27;s also not the appropriate command in this context...). Curiosity got the better of me and after researching I figured out that there has always been an &quot;offline&quot; mode for the type-checking performed by &lt;code&gt;sqlx&lt;&#x2F;code&gt;. You can use &lt;code&gt;cargo sqlx prepare&lt;&#x2F;code&gt; to generate the cache, making a normal deployment workflow possible as long as this cache is checked into version control.&lt;&#x2F;p&gt;
+&lt;p&gt;Stupid mistake, gladly it got fixed, now I know better.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;further-improvements&quot;&gt;Further Improvements&lt;&#x2F;h2&gt;
+&lt;p&gt;This section describes possible further improvements that likely won&#x27;t be implemented. For features in development and planned for v1.1.0, see &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;differental&#x2F;enviame&#x2F;releases&#x2F;tag&#x2F;v1.0.7&quot;&gt;v1.0.7 release notes&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add unit tests and integration tests&lt;&#x2F;li&gt;
+&lt;li&gt;Add proper logging in different levels&lt;&#x2F;li&gt;
+&lt;li&gt;Implement OAuth2 for third-party login options&lt;&#x2F;li&gt;
+&lt;li&gt;Separate the frontend and refactor to an SPA framework like React or Svelte&lt;&#x2F;li&gt;
+&lt;li&gt;Improve database scalability by implementing sharding or read replicas&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;afterthoughts&quot;&gt;Afterthoughts&lt;&#x2F;h2&gt;
+&lt;p&gt;Enviame started as a single-page tool with one endpoint to deliver messages. Then token-based login was added to simplify UX, then registration was added, then email delivery with different priorities was added... Before long it became a playground for me to experiment with various industry-standard solutions, and it was definitely an enjoyable ride. Most of the fun came from the entire process of envisioning, designing, and building from scratch, then stumbling across a blog post explaining the exact same thing.&lt;&#x2F;p&gt;
+&lt;p&gt;Rust definitely made the development process a lot smoother and more enjoyable compared with similar Python servers I&#x27;ve written in the past. Having carefully studied &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;rust-book.cs.brown.edu&#x2F;&quot;&gt;TRPL&lt;&#x2F;a&gt; last year, I hardly encountered any Rust-specific issues. Even when the borrow checker occasionally complained, it&#x27;s usually an immediate realisation and an easy fix. The type system and the ownership model definitely saved me hours or days of painful debugging.&lt;&#x2F;p&gt;
+&lt;p&gt;The experience with CI&#x2F;CD was slightly painful but fun, while the experience with SMTP was mostly just painful. Still, it&#x27;s the kind of chaos I signed up for, and it&#x27;s definitely satisfying to discover the root cause of the issue through layer-by-layer debugging, as underwhelming as &quot;test emails were blocked by iCloud&#x27;s spam filter&quot; sounds like.&lt;&#x2F;p&gt;
+&lt;p&gt;All in all, a very rewarding side quest.&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>

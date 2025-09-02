@@ -1,0 +1,121 @@
+<!doctype html><html class="not-ready lg:text-base overflow-y-scroll scroll-pt-14" lang=en><head prefix="og: https://ogp.me/ns# article: https://ogp.me/ns/article#"><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><meta content="Zola v0.21.0" name=generator><title>IDP - Software Documentation | Brian's Logbook</title><meta content="Brian's Logbook" property=og:site_name><meta content="IDP - Software Documentation" property=og:title><meta content="Documentation for the software portion of the Integrated Design coursework project." name=description><meta content="Documentation for the software portion of the Integrated Design coursework project." property=og:description><meta content=https://blog.brianc.me/projects/idp/ property=og:url><link href=https://blog.brianc.me/projects/idp/ rel=canonical><meta content=article property=og:type><meta content=2025-03-17T00:00:00+00:00 property=article:published_time><meta content=2025-03-19T00:00:00+00:00 property=article:modified_time><meta content=python property=article:tag><meta content=microcontroller property=article:tag><meta content="raspberry pi" property=article:tag><link title="Brian's Logbook | Atom" href=https://blog.brianc.me/atom.xml rel=alternate type=application/atom+xml><link title="Brian's Logbook | RSS" href=https://blog.brianc.me/rss.xml rel=alternate type=application/rss+xml><link href=/favicon.ico rel=icon type=image/x-icon><link href=/apple-touch-icon.png rel=apple-touch-icon sizes=180x180><link href=/favicon-32x32.png rel=icon sizes=32x32 type=image/png><link href=/favicon-16x16.png rel=icon sizes=16x16 type=image/png><link href=/site.webmanifest rel=manifest><link href="https://blog.brianc.me/styles.css?h=200019d398116bbb090a" as=style rel=stylesheet><link href="https://blog.brianc.me/main.min.css?h=2e89f7f30f1019877d14" rel=stylesheet><style>:root{--bg:#f4f4f5;--header:#e4e4e7;color-scheme:light}:root.dark{--bg:#18181b;--header:#27272a;color-scheme:dark}</style><script src="https://blog.brianc.me/js/linkita.min.js?h=1dd3ed42fc674277bc34"></script><script src="https://blog.brianc.me/js/linkita-search.min.js?h=698547b4b081d012c661"></script><body class="text-black duration-100 ease-out bg-[var(--bg)] dark:text-white"><header class="blur-header fixed top-0 z-40 mx-auto min-h-[3.25rem] w-full header-icons"><div class="mx-auto w-full max-w-4xl p-2.5 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center min-h-8"><a class="text-2xl font-semibold" title="Go to home page" accesskey=! href=https://blog.brianc.me/>Brian's Logbook</a><button class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] bg-center bg-no-repeat bg-cover dark:invert [background-image:var(--icon-theme-dark)] dark:[background-image:var(--icon-theme-light)]" title="Switch color scheme" accesskey=$ onclick=window.linkita.toggleDarkMode(); ondblclick=window.linkita.resetDarkMode(); type=button></button><button class="btn-search ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] bg-center bg-no-repeat bg-cover [background-image:var(--icon-search)] dark:invert" accesskey=/ onclick=window.linkita.toggleSearch(); title=Search type=button></button><script>window.linkita.initSearchButton({ scripts: ["https://blog.brianc.me/elasticlunr.min.js", "https://blog.brianc.me/search_index.en.js"] });</script></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" onkeydown="(event.keyCode == 13 || event.keyCode == 32) ? event.preventDefault() || window.linkita.toggleHeaderMenu() : true;" accesskey=+ onclick=window.linkita.toggleHeaderMenu(); role=button tabindex=0 title=Menu></div></div><nav class="flex w-full items-center lg:w-auto"><menu class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://blog.brianc.me/about/>About</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://blog.brianc.me/projects/>Projects</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://blog.brianc.me/posts/>Archive</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://blog.brianc.me/categories/>Categories</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://blog.brianc.me/tags/>Tags</a></menu></nav></div></header><main class="prose prose-neutral relative mx-auto min-h-[calc(100%-4rem)] max-w-3xl break-words px-4 pb-12 pt-28 lg:pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"><div class=hidden id=linkita-search-wrapper><ul id=linkita-search-results></ul></div><article><header class=mb-16><h1 class="!my-0 pb-2.5">IDP - Software Documentation</h1><div class="text-sm antialiased opacity-80">Pub <time datetime=2025-03-17T00:00:00+00:00>2025-03-17</time><span class=middot></span>Upd <time datetime=2025-03-19T00:00:00+00:00>2025-03-19</time><span class=middot></span>Est <time datetime=PT0H1M0S>1 min</time><span class=middot></span><a class="no-underline hover:underline" href=https://blog.brianc.me/tags/python/>#python</a> <a class="no-underline hover:underline" href=https://blog.brianc.me/tags/microcontroller/>#microcontroller</a> <a class="no-underline hover:underline" href=https://blog.brianc.me/tags/raspberry-pi/>#raspberry pi</a></div></header><div class="block-bg mb-12 rounded-lg p-2 text-lg"><details><summary accesskey="=" class="select-none py-0.5 lg:py-1 pl-4"><span class=cursor-pointer>Table of Contents</span></summary> <div class=px-2><ul><li><a class="no-underline hover:underline" href=https://blog.brianc.me/projects/idp/#diagrams>Diagrams</a> <ul><li><a class="no-underline hover:underline" href=https://blog.brianc.me/projects/idp/#class-diagram>Class Diagram</a><li><a class="no-underline hover:underline" href=https://blog.brianc.me/projects/idp/#sequence-diagram>Sequence Diagram</a></ul></ul></div></details></div><section><div class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]" style=--admonition-bg:#00bfa51a><div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1"><div class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert" style=--url:url(./icons/tip.svg)>tip</div><span><strong>Copyright Notice</strong></span></div><div class=pl-4><p>This post is licensed under <a rel="nofollow noreferrer" href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>.</div></div><div class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]" style=--admonition-bg:#53d3e61a><div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1"><div class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert" style=--url:url(./icons/info.svg)>info</div><span><strong>Note</strong></span></div><div class=pl-4><p>The UML diagrams provided below may not strictly adhere to formal UML standards, as formal UML notation is introduced in fourth year and thus is not a requirement for this project's documentation.<p>They should, however, clearly and concisely reflect the structure of the project.</div></div><h2 id=diagrams>Diagrams</h2><h3 id=class-diagram>Class Diagram</h3><pre class="mermaid bg-inherit" translate=no>
+  
+classDiagram
+    class PathFinder {
+        +dijkstras(start: Node, end: Node) List~Instruction~
+    }
+
+    class PicoBot {
+        +move(instructions: List~Instruction~)
+        +turn(is_180: bool)
+        +walk()
+        +pick_up(node: int)
+        +drop_off(depot: int)
+    }
+
+    class MissionControl {
+        +start()
+        +on_bootup()
+        +on_finish()
+    }
+
+    class ColorSensor {
+        +get_colour() str
+    }
+
+    class LineSensor {
+        +value() bool
+    }
+
+    class Motor {
+        +Forward(percentage: int)
+        +Reverse(percentage: int)
+        +off()
+    }
+
+    class Servo {
+        +rotate(angle: int)
+    }
+
+    MissionControl --> PathFinder : calls
+    MissionControl --> PicoBot : commands
+    PicoBot --> ColorSensor : reads from
+    PicoBot --> LineSensor : reads from
+    PicoBot --> Motor : operates
+    PicoBot --> Servo : operates
+
+</pre><h3 id=sequence-diagram>Sequence Diagram</h3><pre class="mermaid bg-inherit" translate=no>
+  
+sequenceDiagram
+    actor User
+    participant MC as MissionControl
+    participant PF as PathFinder
+    participant PB as PicoBot
+    participant LS as LineSensor
+    participant CS as ColorSensor
+    participant M as Motor
+    participant SM as Servo
+
+    User ->> MC: Press button to start mission
+    MC ->> PF: dijkstras(start, target)
+    PF -->> MC: Returns list of instructions
+
+    MC ->> PB: move(instructions)
+
+    loop Execute each instruction
+        PB ->> M: Execute TurnInstruction or WalkInstruction
+        PB ->> LS: Check line sensors for line following
+        LS -->> PB: Direction correction
+    end
+
+    MC ->> PB: pick_up()
+    PB ->> SM: Rotate servo to pick up box
+    PB ->> CS: Check color sensor
+    CS -->> MC: Return detected color
+
+    MC ->> PF: dijkstras(target, depot)
+    PF -->> MC: Returns list of instructions
+
+    MC ->> PB: move(instructions)
+
+    loop Execute each instruction
+        PB ->> M: Execute TurnInstruction or WalkInstruction
+        PB ->> LS: Check line sensors for line following
+        LS -->> PB: Direction correction
+    end
+
+    MC ->> PB: drop_off()
+    PB ->> SM: Rotate servo to drop off box
+
+    MC ->> MC: Loop back to step 2 with a new target node
+
+</pre></section><hr><footer class="mt-12 flex flex-col" accesskey=_ tabindex=-1><div class="mb-2 flex flex-wrap"><span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Categories</span><a class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://blog.brianc.me/categories/writeup/>Writeup</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags</span><a class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://blog.brianc.me/tags/python/>python</a><a class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://blog.brianc.me/tags/microcontroller/>microcontroller</a><a class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://blog.brianc.me/tags/raspberry-pi/>raspberry pi</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" accesskey=, href=https://blog.brianc.me/projects/enviame/><span class=mr-1.5>‹</span><span>Enviame - Interim Writeup</span></a></nav><div class="giscus mt-12"></div><script data-category="Blog Comments" async crossorigin data-category-id=DIC_kwDOOiBcDc4CpnB7 data-emit-metadata=0 data-input-position=top data-lang=en data-loading=lazy data-mapping=pathname data-reactions-enabled=1 data-repo=differental/blog_html data-repo-id=R_kgDOOiBcDQ data-strict=1 data-theme=preferred_color_scheme src=https://giscus.app/client.js></script></article></main><footer class="mx-auto flex lg:mt-5 max-w-3xl flex-wrap items-center px-4 py-3 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2">© <time datetime=2025>2025</time> Brian Chen | <a href=/copyright>Copyright</a> | <a href=/disclaimer>Disclaimer</a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><span class="mr-6 lg:ml-6"> <a class=link href=https://www.getzola.org/ target=_blank>Powered by Zola</a> </span><a class=link href=https://www.getzola.org/themes/linkita/ target=_blank>✎ Linkita</a></div></footer><script type=module>import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  function initMermaid(isDark) {
+    mermaid.initialize({
+      theme: isDark ? "dark" : "default",
+      themeVariables: {
+        darkMode: isDark
+      },
+      startOnLoad: false,
+    });
+    mermaid.run();
+  };
+
+  // Add data-mermaid-code attribute on all mermaid block.
+  document.querySelectorAll(".mermaid").forEach((element) => {
+    element.setAttribute("data-mermaid-code", element.innerHTML);
+  });
+
+  initMermaid(document.documentElement.classList.contains("dark"));
+
+  // Re-render mermaid when theme changed.
+  document.body.addEventListener("set-theme", (e) => {
+    document.querySelectorAll(".mermaid").forEach((element) => {
+      const mermaidCode = element.getAttribute("data-mermaid-code");
+      if (mermaidCode != null) {
+        element.removeAttribute("data-processed");
+        element.innerHTML = mermaidCode;
+      }
+    });
+    initMermaid(e.detail === "dark");
+  });</script>

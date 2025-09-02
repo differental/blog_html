@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Brian&#x27;s Logbook - cpp</title>
+    <subtitle>Notes, thoughts, projects and blog posts by Brian Chen</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://blog.brianc.me/tags/cpp/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.brianc.me"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-05-09T00:00:00+00:00</updated>
+    <id>https://blog.brianc.me/tags/cpp/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Variables, Constants, and Naughty Strings</title>
+        <published>2025-04-24T00:00:00+00:00</published>
+        <updated>2025-05-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Brian Chen
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.brianc.me/posts/variables-and-constants/"/>
+        <id>https://blog.brianc.me/posts/variables-and-constants/</id>
+        
+        <content type="html" xml:base="https://blog.brianc.me/posts/variables-and-constants/">
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(0, 191, 165, 0.1);&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;tip.svg);&quot;
+    &gt;
+      tip
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;Copyright Notice&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;This post is licensed under &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-nc-nd&#x2F;4.0&#x2F;&quot;&gt;CC BY-NC-ND 4.0&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;This note encapsulates some details regarding variables and constants in Rust and C++. Specifically, &lt;code&gt;const&lt;&#x2F;code&gt;, &lt;code&gt;static&lt;&#x2F;code&gt;, &lt;code&gt;let&lt;&#x2F;code&gt; in Rust, and &lt;code&gt;const&lt;&#x2F;code&gt;, &lt;code&gt;auto&#x2F;int&#x2F;char&#x2F;...&lt;&#x2F;code&gt;, &lt;code&gt;constexpr&lt;&#x2F;code&gt; in C++.&lt;&#x2F;p&gt;
+&lt;p&gt;Additionally there&#x27;s some extra notes related to &lt;a href=&quot;https:&#x2F;&#x2F;blog.brianc.me&#x2F;posts&#x2F;variables-and-constants&#x2F;#quirky-references&quot;&gt;references and strings in Rust&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(68, 138, 255, 0.1);&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;note.svg);&quot;
+    &gt;
+      note
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;Nota Bene&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;In this note I&#x27;ll use Rust&#x27;s definition for things like &quot;constants&quot;, and map C++&#x27;s definitions onto Rust&#x27;s.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;h2 id=&quot;rust&quot;&gt;Rust&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;let-local-variables-mutable-or-immutable&quot;&gt;&lt;code&gt;let&lt;&#x2F;code&gt;: Local Variables, Mutable or Immutable&lt;&#x2F;h3&gt;
+&lt;p&gt;See &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;rust-book.cs.brown.edu&#x2F;ch03-01-variables-and-mutability.html&quot;&gt;TRPL 3.1. Variables and Mutability&lt;&#x2F;a&gt; for details.&lt;&#x2F;p&gt;
+&lt;p&gt;In Rust, generally we have three types of &quot;values&quot;. Mutable variables, immutable variables, and constants. This is different from normal conversation, where the term &quot;variable&quot; implies mutability since, well, the thing &quot;varies&quot;.&lt;&#x2F;p&gt;
+&lt;p&gt;A variable is defined using &lt;code&gt;let&lt;&#x2F;code&gt; with type inference which almost always works. The rare exception is when the compiler has no way of figuring out for sure which type a variable is. An example to this is when using &lt;code&gt;.collect()&lt;&#x2F;code&gt; &lt;sup class=&quot;footnote-reference&quot; id=&quot;fr-1-1&quot;&gt;&lt;a href=&quot;#fn-1&quot;&gt;1&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282c34;color:#dcdfe4;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; a &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;10&lt;&#x2F;span&gt;&lt;span&gt;; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; a: u32
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;let mut&lt;&#x2F;span&gt;&lt;span&gt; b: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;&amp;amp;str = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;hello, world&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;By default, these variables are immutable. That is, their value cannot be changed. However, we can &quot;shadow&quot; the variable by declaring another variable of the exact same name. This new variable can be of a different type, different mutability, and different scope.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282c34;color:#dcdfe4;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; a = 20; &#x2F;&#x2F; Would fail compilation
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;let mut&lt;&#x2F;span&gt;&lt;span&gt; a &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;20&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    println!(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;{}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, a); &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; 20
+&lt;&#x2F;span&gt;&lt;span&gt;    a &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;*= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;10&lt;&#x2F;span&gt;&lt;span&gt;; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; Shadowed a becomes 200
+&lt;&#x2F;span&gt;&lt;span&gt;} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; Shadowed a was dropped here
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; a = 20; &#x2F;&#x2F; Would still fail compilation
+&lt;&#x2F;span&gt;&lt;span&gt;println!(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;{}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, a); &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; 10
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; a &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;30&lt;&#x2F;span&gt;&lt;span&gt;; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; Original a no longer accessible
+&lt;&#x2F;span&gt;&lt;span&gt;println!(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;{}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, a); &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; 30
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;It is worth noting that, despite the code examples above, variables defined using &lt;code&gt;let&lt;&#x2F;code&gt; cannot have a global scope - they must exist in functions. Attempting to use &lt;code&gt;let&lt;&#x2F;code&gt; to define a global variable will yield this error message:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#282c34;color:#dcdfe4;&quot;&gt;&lt;code&gt;&lt;span&gt;`let` cannot be used for global variables
+&lt;&#x2F;span&gt;&lt;span&gt;help: consider using `static` or `const` instead of `let`
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;However, they can exist inside closures used with &quot;lazy static&quot;. More on that later.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;quirky-references&quot;&gt;Quirky References&lt;&#x2F;h3&gt;
+&lt;p&gt;In Rust, you can take references to variables (or constants, anything really) and store them inside another variable. Sorta like pointers. I&#x27;ll skip over stuff related to mutable and immutable references (&lt;code&gt;&amp;amp;&lt;&#x2F;code&gt; and &lt;code&gt;&amp;amp;mut&lt;&#x2F;code&gt;) since that&#x27;s a whole new topic related to the borrow checker, but here&#x27;s a quick example:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282c34;color:#dcdfe4;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;let mut&lt;&#x2F;span&gt;&lt;span&gt; c: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;&amp;amp;u32 = &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;a;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Here, &lt;code&gt;c&lt;&#x2F;code&gt; is a mutable variable holding an immutable reference to &lt;code&gt;a&lt;&#x2F;code&gt;. This means &lt;code&gt;c&lt;&#x2F;code&gt; can be changed to point at another &lt;code&gt;u32&lt;&#x2F;code&gt;, but you cannot modify &lt;code&gt;a&lt;&#x2F;code&gt; through &lt;code&gt;c&lt;&#x2F;code&gt; &lt;sup class=&quot;footnote-reference&quot; id=&quot;fr-2-1&quot;&gt;&lt;a href=&quot;#fn-2&quot;&gt;2&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;. &lt;code&gt;c&lt;&#x2F;code&gt; also cannot be changed to point at any variable or constant of any other type (including other integer types), but it can be changed to point at a &lt;code&gt;u32&lt;&#x2F;code&gt; constant.&lt;&#x2F;p&gt;
+&lt;p&gt;The real quirky stuff comes in when you consider literal strings. In Rust, hardcoded strings are &lt;code&gt;&amp;amp;str&lt;&#x2F;code&gt;, different from &lt;code&gt;String&lt;&#x2F;code&gt;. It&#x27;s widely known that &lt;code&gt;&amp;amp;str&lt;&#x2F;code&gt; lives on the stack since it has a fixed size, while &lt;code&gt;String&lt;&#x2F;code&gt; lives on the heap since its size is unknown at compile time. However, the reason there&#x27;s a &lt;code&gt;&amp;amp;&lt;&#x2F;code&gt; here is because &lt;code&gt;b&lt;&#x2F;code&gt; in the first example isn&#x27;t a string in itself. It&#x27;s a pointer to the literal string on the stack!&lt;&#x2F;p&gt;
+&lt;p&gt;Given that &lt;code&gt;b&lt;&#x2F;code&gt; is mutable in the examples above, we can actually do this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282c34;color:#dcdfe4;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span&gt;b &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#98c379;&quot;&gt;&amp;quot;hello! world&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; Reassigning b to a reference to another literal string on the stack
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; s &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;String::from(b);
+&lt;&#x2F;span&gt;&lt;span&gt;b &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;= &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;s[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;..&lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;]; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5c6370;&quot;&gt;&#x2F;&#x2F; Reassigning b to a string slice, a reference to a String object on the heap
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;const-constants&quot;&gt;&lt;code&gt;const&lt;&#x2F;code&gt;: Constants&lt;&#x2F;h3&gt;
+&lt;p&gt;Constants are something completely different in Rust. They are declared using the &lt;code&gt;const&lt;&#x2F;code&gt; keyword, can &lt;strong&gt;never&lt;&#x2F;strong&gt; be mutable, and have some additional quirks. Their conventional naming is the &lt;code&gt;SCREAMING_CASE&lt;&#x2F;code&gt; and their types must be manually annotated at definition, to name a few.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282c34;color:#dcdfe4;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; C: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;u32 = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Since constants are always immutable, they can be defined in either a local or a global scope, and will always have thread-safe reads. Worth noting that the compiler is permitted to copy them around, and not necessarily reading its content from a fixed memory location.&lt;&#x2F;p&gt;
+&lt;p&gt;Constants must be known at compile time, and thus only constant expressions are allowed inside. The details for allowed expressions can be found in &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;stable&#x2F;reference&#x2F;const_eval.html&quot;&gt;The Rust Reference&lt;&#x2F;a&gt;, but in general, basic operations like arthimetic, logical, derefencing, casting, loops, structs&#x2F;tuples&#x2F;arrays. Worth noting that things that would normally panic (&lt;em&gt;e.g.&lt;&#x2F;em&gt;, out-of-bound indexing) would now raise a compile error if they are inside a &lt;code&gt;const&lt;&#x2F;code&gt; expression.&lt;&#x2F;p&gt;
+&lt;p&gt;It is also worth noting that the operations mentioned above (known as &quot;constant expressions&quot;) can also be evaluated during compilation when they&#x27;re in &lt;code&gt;let&lt;&#x2F;code&gt; statements. This doesn&#x27;t necessarily happen, but the compiler is permitted to do so.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;const&lt;&#x2F;code&gt; is typically used to define actual constants, such as configurations, number of experiments, &lt;em&gt;etc.&lt;&#x2F;em&gt;, within the code for easy access.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;static-global-variables-mutable-or-immutable&quot;&gt;&lt;code&gt;static&lt;&#x2F;code&gt;: Global Variables, Mutable or Immutable&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;static&lt;&#x2F;code&gt; is usually used to define global variables. Similar to &lt;code&gt;let&lt;&#x2F;code&gt;, they can be mutable, but similar to &lt;code&gt;const&lt;&#x2F;code&gt;, they must have annotated types and the convention is to use all caps.&lt;&#x2F;p&gt;
+&lt;p&gt;Even though they are called &quot;global variables&quot;, they can also be defined within a local scope, such as a function.&lt;&#x2F;p&gt;
+&lt;p&gt;The reason why it&#x27;s called &quot;static&quot;, is that &lt;code&gt;static&lt;&#x2F;code&gt; items always have only one copy. All references of the object will be pointing at the exact same item. This is not the case for &lt;code&gt;const&lt;&#x2F;code&gt;. In technical terms, &lt;code&gt;static&lt;&#x2F;code&gt; objects have the &lt;code&gt;&#x27;static&lt;&#x2F;code&gt; lifetime, and &lt;code&gt;drop&lt;&#x2F;code&gt; is not called on it at the end of the program.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;static&lt;&#x2F;code&gt; is typically used to define application configurations or other variables shared by the entire application. Read-only access to &lt;code&gt;static&lt;&#x2F;code&gt; is thread safe. It is possible to use crates such as &lt;code&gt;once_cell&lt;&#x2F;code&gt; to initialise &lt;code&gt;static&lt;&#x2F;code&gt; objects at runtime startup, so it&#x27;s often used for things like reading from &lt;code&gt;.env&lt;&#x2F;code&gt; or other configuration paths during runtime. The data will be accessible throughout the entire duration of a program.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;static&lt;&#x2F;code&gt; can be defined as mutable, but that is unsafe due to the potential of data races which will lead to undefined behaviour. It is a common pattern to use &lt;code&gt;static&lt;&#x2F;code&gt; for things like the global state of a web application, in which case you can wrap &lt;code&gt;Mutex&lt;&#x2F;code&gt; inside a &lt;code&gt;static&lt;&#x2F;code&gt; immutable variable like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282c34;color:#dcdfe4;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;use &lt;&#x2F;span&gt;&lt;span&gt;std::sync::{LazyLock, Mutex};
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;static &lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;ARRAY&lt;&#x2F;span&gt;&lt;span&gt;: LazyLock&amp;lt;Mutex&amp;lt;Vec&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;u8&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;LazyLock::new(|| Mutex::new(vec![]));
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c678dd;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#61afef;&quot;&gt;do_a_call&lt;&#x2F;span&gt;&lt;span&gt;() {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;ARRAY&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61afef;&quot;&gt;lock&lt;&#x2F;span&gt;&lt;span&gt;().&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61afef;&quot;&gt;unwrap&lt;&#x2F;span&gt;&lt;span&gt;().&lt;&#x2F;span&gt;&lt;span style=&quot;color:#61afef;&quot;&gt;push&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#e5c07b;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Example provided by &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;27791532&#x2F;how-do-i-create-a-global-mutable-singleton&quot;&gt;random StackOverflow question&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;You can call &lt;code&gt;*OTHER_STATIC_VARIABLE&lt;&#x2F;code&gt; inside the closure of another static variable to enforce the order of initilisation.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;c&quot;&gt;C++&lt;&#x2F;h2&gt;
+&lt;p&gt;In C++, &lt;code&gt;const&lt;&#x2F;code&gt; is a modifier just like &lt;code&gt;mut&lt;&#x2F;code&gt; (doing the opposite), and there are no keyword separating local and global variables. They have &lt;code&gt;constexpr&lt;&#x2F;code&gt; instead of &lt;code&gt;const&lt;&#x2F;code&gt; for actual constants, and that&#x27;s basically it.&lt;&#x2F;p&gt;
+&lt;p&gt;A few additional quirks:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Type inference can be used with &lt;code&gt;constexpr&lt;&#x2F;code&gt; (&lt;code&gt;constexpr auto a = 1;&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;constexpr&lt;&#x2F;code&gt; are immutable just like the Rust constants, so there&#x27;s no need to write &lt;code&gt;const constexpr&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Similar to Rust&#x27;s case, constant expressions can be evaluated at compile time even when they are not defined with &lt;code&gt;constexpr&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Simple mapping which is probably not entirely accurate:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Rust&lt;&#x2F;th&gt;&lt;th&gt;C++&lt;&#x2F;th&gt;&lt;th&gt;Description&lt;&#x2F;th&gt;&lt;th&gt;Thread Safe&lt;&#x2F;th&gt;&lt;th&gt;Evaluated at Compile Time&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;let mut&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;auto&lt;&#x2F;code&gt;, &lt;code&gt;int&lt;&#x2F;code&gt;...&lt;&#x2F;td&gt;&lt;td&gt;Mutable Local Variable&lt;&#x2F;td&gt;&lt;td&gt;Yes&lt;&#x2F;td&gt;&lt;td&gt;Possible&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;static mut&lt;&#x2F;code&gt;&lt;sup class=&quot;footnote-reference&quot; id=&quot;fr-3-1&quot;&gt;&lt;a href=&quot;#fn-3&quot;&gt;3&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;auto&lt;&#x2F;code&gt;, &lt;code&gt;int&lt;&#x2F;code&gt;...&lt;&#x2F;td&gt;&lt;td&gt;Mutable Global Variable&lt;&#x2F;td&gt;&lt;td&gt;No&lt;&#x2F;td&gt;&lt;td&gt;Possible&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;let&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;const auto&lt;&#x2F;code&gt;&lt;sup class=&quot;footnote-reference&quot; id=&quot;fr-4-1&quot;&gt;&lt;a href=&quot;#fn-4&quot;&gt;4&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;, &lt;code&gt;const int&lt;&#x2F;code&gt;...&lt;&#x2F;td&gt;&lt;td&gt;Immutable Local Variable&lt;&#x2F;td&gt;&lt;td&gt;Yes&lt;&#x2F;td&gt;&lt;td&gt;Possible&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;static&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;const auto&lt;&#x2F;code&gt;, &lt;code&gt;const int&lt;&#x2F;code&gt;...&lt;&#x2F;td&gt;&lt;td&gt;Immutable Global Variable&lt;&#x2F;td&gt;&lt;td&gt;Yes&lt;&#x2F;td&gt;&lt;td&gt;Possible&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;const&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;constexpr auto&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Constant&lt;&#x2F;td&gt;&lt;td&gt;Yes&lt;&#x2F;td&gt;&lt;td&gt;Yes, Always&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;To achieve &quot;thread-save mutable global variable&quot;, in C++ a similar design pattern (as described earlier) involving mutexes is often used.&lt;&#x2F;p&gt;
+&lt;p&gt;C++, however, will not warn you at all that data races might happen if you define mutable global variables in a multi-threaded context, so if you accidentally do that, it&#x27;ll probably be a couple hours of painful debugging.&lt;&#x2F;p&gt;
+&lt;section class=&quot;footnotes&quot;&gt;
+&lt;ol class=&quot;footnotes-list&quot;&gt;
+&lt;li id=&quot;fn-1&quot;&gt;
+&lt;p&gt;You can either specify &lt;code&gt;.collect::&amp;lt;Type&amp;gt;()&lt;&#x2F;code&gt;, in which case the type of the variable is inferred, or specify the type of the variable, in which case the target of the &lt;code&gt;collect&lt;&#x2F;code&gt; method is inferred. &lt;a href=&quot;#fr-1-1&quot;&gt;↩&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li id=&quot;fn-2&quot;&gt;
+&lt;p&gt;A mutable reference to &lt;code&gt;a&lt;&#x2F;code&gt; would also be invalid in itself, since &lt;code&gt;a&lt;&#x2F;code&gt; is immutable. &lt;a href=&quot;#fr-2-1&quot;&gt;↩&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li id=&quot;fn-3&quot;&gt;
+&lt;p&gt;Only mutations require an &lt;code&gt;unsafe&lt;&#x2F;code&gt; block. &lt;a href=&quot;#fr-3-1&quot;&gt;↩&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li id=&quot;fn-4&quot;&gt;
+&lt;p&gt;You can also write this as &lt;code&gt;auto const&lt;&#x2F;code&gt; (less common) but not &lt;code&gt;constexpr auto&lt;&#x2F;code&gt; as &lt;code&gt;auto constexpr&lt;&#x2F;code&gt;. This is because &lt;code&gt;constexpr&lt;&#x2F;code&gt; is a declaration specifier while &lt;code&gt;const&lt;&#x2F;code&gt; is a type qualifier. Declaration specifiers modify type specifiers (&lt;code&gt;auto&lt;&#x2F;code&gt;), hence they must appear in order. Type qualifiers can be anywhere. &lt;a href=&quot;#fr-4-1&quot;&gt;↩&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;section&gt;
+</content>
+        
+    </entry>
+</feed>

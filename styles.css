@@ -1,0 +1,10 @@
+code::before, code::after {
+    content: "" !important;
+}
+
+code:not(pre > code) {
+    margin-left: 2px;
+    margin-right: 2px;
+    text-decoration: 2px lightskyblue underline;
+    text-underline-offset: 2.5px;
+}
