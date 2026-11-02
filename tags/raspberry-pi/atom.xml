@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Brian&#39;s Logbook - raspberry pi</title>
+    <subtitle>Notes, thoughts, projects and blog posts by Brian Chen</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://blog.brianc.me/tags/raspberry-pi/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.brianc.me"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-03-19T00:00:00+00:00</updated>
+    <id>https://blog.brianc.me/tags/raspberry-pi/atom.xml</id>
+    <entry xml:lang="en">
+        <title>IDP - Software Documentation</title>
+        <published>2025-03-17T00:00:00+00:00</published>
+        <updated>2025-03-19T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Brian Chen</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.brianc.me/projects/idp/"/>
+        <id>https://blog.brianc.me/projects/idp/</id>
+        
+        <content type="html" xml:base="https://blog.brianc.me/projects/idp/">&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-(--admonition-bg)&quot;
+  style=&quot;--admonition-bg: var(--admonition-tip);&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-(--admonition-bg) p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0px] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(icons/tip.svg);&quot;
+    &gt;
+      tip
+    &lt;/div&gt;
+    &lt;span&gt;&lt;strong&gt;Copyright Notice&lt;/strong&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;This post is licensed under &lt;a rel=&quot;nofollow noreferrer external&quot; href=&quot;https://creativecommons.org/licenses/by-nc-nd/4.0/&quot;&gt;CC BY-NC-ND 4.0&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-(--admonition-bg)&quot;
+  style=&quot;--admonition-bg: var(--admonition-info);&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-(--admonition-bg) p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0px] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(icons/info.svg);&quot;
+    &gt;
+      info
+    &lt;/div&gt;
+    &lt;span&gt;&lt;strong&gt;Note&lt;/strong&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;The UML diagrams provided below may not strictly adhere to formal UML standards, as formal UML notation is introduced in fourth year and thus is not a requirement for this project&#39;s documentation.&lt;/p&gt;
+&lt;p&gt;They should, however, clearly and concisely reflect the structure of the project.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id=&quot;diagrams&quot;&gt;Diagrams&lt;/h2&gt;
+&lt;h3 id=&quot;class-diagram&quot;&gt;Class Diagram&lt;/h3&gt;
+&lt;pre class=&quot;mermaid bg-inherit&quot; translate=&quot;no&quot;&gt;
+  
+
+classDiagram
+    class PathFinder {
+        +dijkstras(start: Node, end: Node) List~Instruction~
+    }
+
+    class PicoBot {
+        +move(instructions: List~Instruction~)
+        +turn(is_180: bool)
+        +walk()
+        +pick_up(node: int)
+        +drop_off(depot: int)
+    }
+
+    class MissionControl {
+        +start()
+        +on_bootup()
+        +on_finish()
+    }
+
+    class ColorSensor {
+        +get_colour() str
+    }
+
+    class LineSensor {
+        +value() bool
+    }
+
+    class Motor {
+        +Forward(percentage: int)
+        +Reverse(percentage: int)
+        +off()
+    }
+
+    class Servo {
+        +rotate(angle: int)
+    }
+
+    MissionControl --&gt; PathFinder : calls
+    MissionControl --&gt; PicoBot : commands
+    PicoBot --&gt; ColorSensor : reads from
+    PicoBot --&gt; LineSensor : reads from
+    PicoBot --&gt; Motor : operates
+    PicoBot --&gt; Servo : operates
+
+
+&lt;/pre&gt;
+&lt;h3 id=&quot;sequence-diagram&quot;&gt;Sequence Diagram&lt;/h3&gt;
+&lt;pre class=&quot;mermaid bg-inherit&quot; translate=&quot;no&quot;&gt;
+  
+
+sequenceDiagram
+    actor User
+    participant MC as MissionControl
+    participant PF as PathFinder
+    participant PB as PicoBot
+    participant LS as LineSensor
+    participant CS as ColorSensor
+    participant M as Motor
+    participant SM as Servo
+
+    User -&gt;&gt; MC: Press button to start mission
+    MC -&gt;&gt; PF: dijkstras(start, target)
+    PF --&gt;&gt; MC: Returns list of instructions
+
+    MC -&gt;&gt; PB: move(instructions)
+
+    loop Execute each instruction
+        PB -&gt;&gt; M: Execute TurnInstruction or WalkInstruction
+        PB -&gt;&gt; LS: Check line sensors for line following
+        LS --&gt;&gt; PB: Direction correction
+    end
+
+    MC -&gt;&gt; PB: pick_up()
+    PB -&gt;&gt; SM: Rotate servo to pick up box
+    PB -&gt;&gt; CS: Check color sensor
+    CS --&gt;&gt; MC: Return detected color
+
+    MC -&gt;&gt; PF: dijkstras(target, depot)
+    PF --&gt;&gt; MC: Returns list of instructions
+
+    MC -&gt;&gt; PB: move(instructions)
+
+    loop Execute each instruction
+        PB -&gt;&gt; M: Execute TurnInstruction or WalkInstruction
+        PB -&gt;&gt; LS: Check line sensors for line following
+        LS --&gt;&gt; PB: Direction correction
+    end
+
+    MC -&gt;&gt; PB: drop_off()
+    PB -&gt;&gt; SM: Rotate servo to drop off box
+
+    MC -&gt;&gt; MC: Loop back to step 2 with a new target node
+
+
+&lt;/pre&gt;
+</content>
+        
+    </entry>
+</feed>
